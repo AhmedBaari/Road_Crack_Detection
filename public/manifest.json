@@ -1,0 +1,14 @@
+{
+  "name": "My PWA",
+  "short_name": "PWA",
+  "start_url": ".",
+  "display": "fullscreen",
+  "background_color": "#fff",
+  "description": "My awesome Progressive Web App!",
+  "icons": [
+    {
+      "src": "./dzl5aa.svg",
+      "sizes": "800x800"
+    }
+  ]
+}
