@@ -18,7 +18,7 @@ def process_image():
 
         ## RANDOM NUMBER GENERATOR
         # Generate a random number between 0 and 9
-        random_number = random.randint(0, 9)
+        random_number = random.randint(0, 3)
 
         # Check if the random number is less than or equal to 0 (10% probability)
         if random_number <= 0:

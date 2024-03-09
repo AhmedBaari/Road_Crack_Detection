@@ -85,13 +85,16 @@ function saveVideo() {
 }
 
 let recordingInterval;
+flag = 0;
 
 recordButton.addEventListener("click", function () {
   if (mediaRecorder && mediaRecorder.state === "recording") {
+    flag = 0;
     mediaRecorder.stop();
     clearInterval(recordingInterval);
     recordButton.textContent = "Record";
   } else {
+    flag = 1;
     chunks = [];
     mediaRecorder = new MediaRecorder(video.srcObject);
     mediaRecorder.ondataavailable = function (e) {
@@ -116,6 +119,9 @@ recordButton.addEventListener("click", function () {
 });
 
 function sendFrameToAPI() {
+if (flag == 0) {
+  return;
+} 
   const canvas = document.createElement("canvas");
 const context = canvas.getContext("2d");
 canvas.width = video.videoWidth;
@@ -137,19 +143,34 @@ fetchResponse.then(res => res.blob()).then(blob => {
     if (await response.ok) {
       data = await response.json();
       damage = data.damage;
-      console.log(damage);
+      console.log("Bool",damage);
 
+      response.damageType = "TEST" // TODO: Replace with actual damage type
       // DAMAGE HANDLING 
       if (damage == 1) {
         console.log("Damage detected");
-        
-        // Show alert screen -- ISSAC
-        const alertScreen = document.getElementById("alertScreen");
-        alertScreen.style.display = "block";
+    document.getElementById('damageAlert').style.display = 'block';
+    document.getElementById('damageType').textContent = response.damageType;
+        //document.getElementById('damageImage').src = frameUrl;
+        // Example bounding boxes in this image
+        x_min = 100;
+        y_min = 100;
+        x_max = 200;
+        y_max = 200;
 
-        
+        // Draw bounding box
+        context.beginPath();
+        context.lineWidth = "6";
+        context.strokeStyle = "red";
+        context.rect(x_min, y_min, x_max - x_min, y_max - y_min);
+        context.stroke();
+        // Display image with bounding box
+        document.getElementById('damageImage').src = canvas.toDataURL("image/webp");
 
-      }
+    setTimeout(function() {
+        document.getElementById('damageAlert').style.display = 'none';
+    }, 5000);
+}
 
 
       console.log("Frame sent successfully");
@@ -162,6 +183,11 @@ fetchResponse.then(res => res.blob()).then(blob => {
   });
 });
 }
+
+
+
+
+setInterval(sendFrameToAPI, 2000);
 
 function saveFrame() {
   const canvas = document.createElement("canvas");
@@ -176,10 +202,11 @@ function saveFrame() {
   downloadLink.click();
 }
 
-setInterval(saveFrame, 10000);
-setInterval(sendFrameToAPI, 2000);
+
+
 
 // Save frame every 2 seconds
+//setInterval(saveFrame, 10000);
 
 /* PWA INSTALL PROMPT */
 
