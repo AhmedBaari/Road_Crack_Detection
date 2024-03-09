@@ -23,10 +23,40 @@ body {
     border: none;
     outline: none;
 }
+#viewImagesButton {
+    position: fixed;
+    bottom: 40px;
+    left: calc(50% - 100px); /* Adjust as needed */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ebe9ec73;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#imagesContainer {
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Creates a responsive grid */
+    grid-gap: 10px; /* Space between images */
+    padding: 20px; /* Space around the grid */
+    box-sizing: border-box; /* Include padding in width and height */
+    overflow-y: auto; /* Add scroll if content is too tall */
+}
+
+#imagesContainer img {
+    width: 100%; /* Make images fill their container */
+    height: auto; /* Keep aspect ratio */
+    object-fit: cover; /* Cover the whole area of the container */
+}
+
 #switchCameraButton {
     position: fixed;
     bottom: 40px;
-    left: calc(50% + 60px);
+    left: calc(50% + 60px); /* Adjust as needed */
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -65,3 +95,4 @@ body {
     font-size: 20px; /* Adjust this value as per your needs */
     font-family: Arial, sans-serif; /* Change this to your preferred font */
 }
+

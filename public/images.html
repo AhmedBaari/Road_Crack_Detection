@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Images</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
+</head>
+<body>
+    <h1>Images</h1>
+    <div id="imagesContainer"></div>
+
+    <script>
+        // Initialize Firebase
+        // TODO: Replace with your Firebase project's configuration
+          const firebaseConfig = {
+            apiKey: "AIzaSyAk9dAF73p2hDN0qPpwyZENDM1ddYdKWBY",
+            authDomain: "roadcheck-870d0.firebaseapp.com",
+            projectId: "roadcheck-870d0",
+            storageBucket: "roadcheck-870d0.appspot.com",
+            messagingSenderId: "55117268796",
+            appId: "1:55117268796:web:0a89f33e26ee9fbeca8039"
+          };
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the Firestore collection
+        const db = firebase.firestore();
+        const collectionRef = db.collection('damages');
+
+        // Fetch all documents from the collection
+        collectionRef.get().then((querySnapshot) => {
+            // Clear the images container
+            let imagesContainer = document.getElementById('imagesContainer');
+            imagesContainer.innerHTML = '';
+
+            // Loop through each document and create an img element for each image
+            querySnapshot.forEach((doc) => {
+                let imageUrl = doc.data().imageUrl;
+                let img = document.createElement('img');
+                img.src = imageUrl;
+                imagesContainer.appendChild(img);
+            });
+        }).catch((error) => {
+            console.error('Error getting documents: ', error);
+        });
+    </script>
+</body>
+</html>

@@ -1,3 +1,9 @@
+
+
+
+
+
+
 // Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -165,7 +171,48 @@ fetchResponse.then(res => res.blob()).then(blob => {
         context.rect(x_min, y_min, x_max - x_min, y_max - y_min);
         context.stroke();
         // Display image with bounding box
-        document.getElementById('damageImage').src = canvas.toDataURL("image/webp");
+        let imageData = canvas.toDataURL('image/png');
+        document.getElementById('damageImage').src = imageData;
+
+        /* SAVING THE IMAGE */
+        // Step 1: Get the image data
+        let blob = dataURItoBlob(imageData); // convert imageData to blob
+        let storageRef = firebase.storage().ref();
+
+        // Step 2: Upload the image to Firebase Cloud Storage
+        let uniqueFileName = `damage_${Date.now()}.png`;
+        let imageRef = storageRef.child(`images/${uniqueFileName}`);
+        imageRef.put(blob).then((snapshot) => {
+            return snapshot.ref.getDownloadURL(); // get the download URL
+        }).then((downloadURL) => {
+            // Step 3: Save the download URL to Firebase Firestore
+            let db = firebase.firestore();
+            db.collection('damages').add({
+                damageType: 'DA01', // change this to the actual damage type
+                imageUrl: downloadURL
+            }).then((docRef) => {
+                console.log('Document written with ID: ', docRef.id);
+            }).catch((error) => {
+                console.error('Error adding document: ', error);
+            });
+        }).catch((error) => {
+            console.error('Error uploading image: ', error);
+        });
+        
+
+        // Helper function to convert data URI to blob
+        function dataURItoBlob(dataURI) {
+            let byteString = atob(dataURI.split(',')[1]);
+            let ab = new ArrayBuffer(byteString.length);
+            let ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], {type: 'image/png'});
+        }
+      
+        
+
 
     setTimeout(function() {
         document.getElementById('damageAlert').style.display = 'none';
@@ -211,4 +258,5 @@ function saveFrame() {
 /* PWA INSTALL PROMPT */
 
 
+/* VIEW ALL IMAGES */
 
