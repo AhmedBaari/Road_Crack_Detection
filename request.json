@@ -1,0 +1,23 @@
+{
+    "image": "FILE";
+    "size": "720x720";
+
+
+    OUTPUT: {
+       "cracks": [
+            {
+                "x_min": 100,
+                "y_min": 100,
+                "x_max": 50,
+                "y_max": 50
+            },
+            {
+                "x_min": 100,
+                "y_min": 100,
+                "x_max": 50,
+                "y_max": 50
+            }
+       ] 
+
+    }
+}
