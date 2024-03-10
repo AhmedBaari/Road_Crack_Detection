@@ -139,44 +139,47 @@ const frameUrl = canvas.toDataURL("image/webp");
 const fetchResponse = fetch(frameUrl);
 fetchResponse.then(res => res.blob()).then(blob => {
   const formData = new FormData();
-  formData.append("image", blob, 'image.webp');
+
+     formData.append("image", blob, 'image.webp');
+
+
+ 
 
   fetch("http://localhost:6789/process_image", {
     method: "POST",
     body: formData
   })
-  .then(async  response => {
-    if (await response.ok) {
-      data = await response.json();
-      damage = data.damage;
-      console.log("Bool",damage);
+    .then(async response => response.blob())
+  .then(blob => {
 
-      response.damageType = "TEST" // TODO: Replace with actual damage type
-      // DAMAGE HANDLING 
-      if (damage == 1) {
+      var url = URL.createObjectURL(blob);
+      document.getElementById('damageImage').src = url;
+  });
+  
+
+
+  // random number between 1 and 9 to simulate damage detection
+  const a = Math.floor(Math.random() * 5) + 1;
+
+      
+    
+      if (a == 1) {
         console.log("Damage detected");
-    document.getElementById('damageAlert').style.display = 'block';
-    document.getElementById('damageType').textContent = response.damageType;
-        //document.getElementById('damageImage').src = frameUrl;
-        // Example bounding boxes in this image
-        x_min = 100;
-        y_min = 100;
-        x_max = 200;
-        y_max = 200;
+        document.getElementById('damageAlert').style.display = 'block';
+        
+        setTimeout(function() {
+                document.getElementById('damageAlert').style.display = 'none';
+            }, 5000);
+    //document.getElementById('damageType').textContent = response.damageType;
 
-        // Draw bounding box
-        context.beginPath();
-        context.lineWidth = "6";
-        context.strokeStyle = "red";
-        context.rect(x_min, y_min, x_max - x_min, y_max - y_min);
-        context.stroke();
         // Display image with bounding box
-        let imageData = canvas.toDataURL('image/png');
-        document.getElementById('damageImage').src = imageData;
+        //let imageData = canvas.toDataURL('image/png');
+        //document.getElementById('damageImage').src = imageData;
 
         /* SAVING THE IMAGE */
         // Step 1: Get the image data
-        let blob = dataURItoBlob(imageData); // convert imageData to blob
+        //let blob = dataURItoBlob(imageData); // convert imageData to blob
+        let blob = url;
         let storageRef = firebase.storage().ref();
 
         // Step 2: Upload the image to Firebase Cloud Storage
@@ -214,10 +217,8 @@ fetchResponse.then(res => res.blob()).then(blob => {
         
 
 
-    setTimeout(function() {
-        document.getElementById('damageAlert').style.display = 'none';
-    }, 5000);
-}
+
+
 
 
       console.log("Frame sent successfully");
@@ -228,8 +229,8 @@ fetchResponse.then(res => res.blob()).then(blob => {
   .catch(error => {
     console.log("An error occurred: " + error);
   });
-});
-}
+};
+
 
 
 
