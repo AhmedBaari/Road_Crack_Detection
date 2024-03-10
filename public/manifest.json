@@ -1,10 +1,10 @@
 {
-  "name": "My PWA",
-  "short_name": "PWA",
+  "name": "Vantage Road Damage Checker",
+  "short_name": "Vantage RoadCheck",
   "start_url": ".",
   "display": "fullscreen",
   "background_color": "#fff",
-  "description": "My awesome Progressive Web App!",
+  "description": "Submission for Tri-NIT Hackathon",
   "icons": [
     {
       "src": "./dzl5aa.svg",
