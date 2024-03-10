@@ -1,9 +1,10 @@
 # TRINIT_Vantage_ML01
 
+## To Run
+- `python server.py` in server folder
+- `firebase serve` in root
 
-## To DO
-- [ ] Location and location based services
-- [ ] recorder colour change
-- [ ] firestore 
-- [ ] firebase deployment 
-- [ ] the alert
+## Team Members
+Ahmed Baari
+Issac Zerubbabel
+Pranav K
