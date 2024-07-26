@@ -1,14 +1,14 @@
-# TRINIT_Vantage_ML01
+# Road Crack Detection
+A project for the **TRINIT Hackathon 2024**.
 
 ## To Run
 - `python server.py` in server folder
 - `firebase serve` in root
 
-## Team Members
+## Team Vantage
 Ahmed Baari  
 Issac Zerubbabel  
 Pranav K  
 
-
-## Video 
+## Submission Video 
 Youtube: https://youtu.be/YppLScjU0LE
